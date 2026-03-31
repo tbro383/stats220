@@ -1,0 +1,71 @@
+---
+title: Difference in Monster Energy Prices Across Supermarkets
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+library(tidyverse)
+```
+
+
+## Monster energy prices across different supermarkets
+This dynamic report analyses observational data collected on 500mL cans of Monster Energy. The purpose of the report is to compare price differences across supermarkets, identify how often discounts were observed, and summarise key patterns in the data.
+
+
+```{r}
+logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vT2QH7Ac_ZfaWjjlUe-FJvWOYfESnC_5yGdDL_PIF_EH5lv2pkw46hql1TetGHonAcxllaMUt20cIk5/pub?output=csv")
+
+latest_data <- logged_data %>%
+  rename(
+    timestamp = Timestamp,
+    observation_day = `What is the date of your observation?`,
+    supermarket = `Which supermarket did you visit?`,
+    location = `Which location did you visit?`,
+    discount = `Was there a discount on 500mL can of Monster Energy`,
+    regular_price = `What was the regular price?`,
+    discount_price = `What was the discount price?`)
+
+total_observations <- nrow(latest_data)
+mean_regular_price <- mean(latest_data$regular_price, na.rm = TRUE)
+min_discount_price <- min(latest_data$discount_price, na.rm = TRUE)
+
+num_discounted <- latest_data %>%
+  filter(discount == "Yes") %>%
+  summarise(total = n()) %>%
+  pull(total)
+```
+
+
+A total of **`r total_observations` observations** have been recorded so far.
+
+The **average regular price** was **$`r round(mean_regular_price, 2)`**.
+
+The **lowest discount price** was **$`r round(min_discount_price, 2)`**.
+
+Discounts were observed **`r num_discounted` times**.
+
+### Number of observations by supermarket
+
+```{r}
+latest_data %>%
+  ggplot(aes(x = supermarket)) +
+  geom_bar() +
+  labs(
+    title = "Number of observations by supermarket",
+    x = "Supermarket",
+    y = "Count")
+```
+
+### Discounts
+
+
+```{r}
+latest_data %>%
+  ggplot(aes(x = discount)) +
+  geom_bar() +
+  labs(
+    title = "Was Monster Energy discounted?",
+    x = "Discount",
+    y = "Count")
+```
