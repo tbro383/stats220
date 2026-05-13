@@ -1,1 +1,59 @@
 
+---
+title: Finding the best monster energy deals accross supermarkets in Auckland
+output: html_document
+---
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+
+```{js}
+$(function() {
+  $(".level2").css('visibility', 'hidden');
+  $(".level2").first().css('visibility', 'visible');
+  $(".container-fluid").height($(".container-fluid").height() + 300);
+  $(window).on('scroll', function() {
+    $('h2').each(function() {
+      var h2Top = $(this).offset().top - $(window).scrollTop();
+      var windowHeight = $(window).height();
+      if (h2Top >= 0 && h2Top <= windowHeight / 2) {
+        $(this).parent('div').css('visibility', 'visible');
+      } else if (h2Top > windowHeight / 2) {
+        $(this).parent('div').css('visibility', 'hidden');
+      }
+    });
+  });
+})
+```
+
+```{css, echo=FALSE}
+body {
+  background-color: #edf8fb;
+  color: #003b2f;}
+
+h1, h2 {
+  color: #006d2c;}
+
+img {
+  border-radius: 10px;}
+```
+
+## Difference in Monster Energy Prices Across Different Supermarkets
+
+### This plot compares the mean price of a 500mL can of Monster Energy drink across different supermarkets. This plot helps us visualise the trend to determine which supermarkets sells the Monster Energy at a higher or lower price.
+
+![Bar chart of average monster prices across different supermarkets](mean_price.png)
+
+## Discounts on different weekdays
+
+### This plot plots the discount rates on each days of the week. This allows us to visualise which days were offering discounts more frequently.
+![Line graph of discount frequency across different days](discount_plot.png)
+
+## Mean amount saved on discount
+
+### This plot compares the mean savings we get from discounts across different supermarkets. This allows us to visualise how much we save on average by just purchasing the drink from a specific store.
+![Bar chart of mean savings across different supermarkst](savings_plot.png)
+
